@@ -1,97 +1,68 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Child from "./Child";
 
-// const Parent = () => {
+function Parent() {
+   const [cartItems, setCartItems] = useState([
+      { id: 1, name: "Item 1", price: 10 },
+      { id: 2, name: "Item 2", price: 20 },
+      { id: 3, name: "Item 3", price: 30 },
+   ]);
+   const [id, setId] = useState(1);
 
-//     let [cartItems, setCartItems] = useState([])
-
-//     function addItem(){
-//         let itemName = document.getElementById("itemName").value;
-//         let itemPrice = document.getElementById("itemPrice").value;
-//         setCartItems((prevItems) => [
-//            ...prevItems,
-//            {
-//               itemName: itemName,
-//               itemPrice: itemPrice,
-//            },
-//         ]);
-//         console.log(cartItems)
-//     }
-
-//     return (
-//        <div className="parent">
-//           <h1>Parent Component</h1>
-
-//           Item Name
-//           <input required id="itemName" type="text" name="itemName" />
-
-//           Item Price
-//           <input required id="itemPrice" type="text" name="itemPrice" />
-
-//           <button onClick={addItem} >Add Item</button>
-
-//           <Child cartItems={cartItems} setCartItems={setCartItems} />
-//        </div>
-//     );
-// }
-
-
-
-
-const Parent = () => {
-   const [cartItems, setCartItems] = useState([]);
-   const [id, setId] = useState(1)
+   // form input values
    const [itemName, setItemName] = useState("");
    const [itemPrice, setItemPrice] = useState("");
 
-   function addItem() {
-      setCartItems((prevItems) => [
-         ...prevItems,
-         {
-            itemId: id,
-            itemName: itemName,
-            itemPrice: itemPrice,
-         },
-      ]);
+   const addItem = () => {
+      let newItem;
+      if (itemName && itemPrice) {
+         newItem = { id: id, name: itemName, price: itemPrice };
+         setId(id + 1);
+      }
+      setCartItems([...cartItems, newItem]);
       setItemName("");
       setItemPrice("");
-      setId(id+1);
-   }
+   };
 
-   const removeItem = (id)=>{
-      cartItems.filter(item=>item.itemId!=id)
-   }
+   const removeItem = (itemId) => {
+      setCartItems(cartItems.filter((item) => item.id != itemId));
+   };
 
    return (
       <div className="parent">
          <h1>Parent Component</h1>
-         Item Name
-         <input
-            required
-            id="itemName"
-            type="text"
-            name="itemName"
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
-         />
-         Item Price
-         <input
-            required
-            id="itemPrice"
-            type="text"
-            name="itemPrice"
-            value={itemPrice}
-            onChange={(e) => setItemPrice(e.target.value)}
-         />
-         <button onClick={addItem}>Add Item</button>
-         <Child cartItems={cartItems} onremove={removeItem} />
+         <form
+            onSubmit={(e) => {
+               e.preventDefault();
+            }}
+         >
+            <label htmlFor="itemName">Item Name:</label>
+            <input
+               type="text"
+               id="itemName"
+               value={itemName}
+               onChange={(e) => setItemName(e.target.value)}
+            />
+            <label htmlFor="itemPrice">Item Price:</label>
+            <input
+               type="number"
+               id="itemPrice"
+               value={itemPrice}
+               onChange={(e) => setItemPrice(e.target.value)}
+            />
+            <button
+               type="submit"
+               onClick={() => {
+                  addItem();
+                  setId(id + 1);
+               }}
+            >
+               Add Item
+            </button>
+         </form>
+         <Child cartItems={cartItems} onRemove={removeItem} />
       </div>
    );
-};
-
-
-
-
-
+}
 
 export default Parent;

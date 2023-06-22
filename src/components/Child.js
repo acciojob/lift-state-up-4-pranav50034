@@ -1,29 +1,26 @@
-import React, {useState} from "react";
-import List from "./List";
+import React from "react";
 
-const Child = ({cartItems, onremove}) => {
-
-
-    return (
-       <div className="child">
-          <h2>Child Component</h2>
-          <ul>
-             {cartItems &&
-                cartItems.map((item) => (
-                   <li key={item.id}>
-                      {item.itemName} - ${item.itemPrice}
-                      <button
-                         onClick={() => {
-                            onremove(item.itemId);
-                         }}
-                      >
-                         Remove
-                      </button>
-                   </li>
-                ))}
-          </ul>
-       </div>
-    );
+function Child({ cartItems, onRemove }) {
+   return (
+      <div className="child">
+         <h2>Child Component</h2>
+         <ul>
+            {cartItems &&
+               cartItems.map((item) => (
+                  <li key={item.id}>
+                     {item.name} - ${item.price}
+                     <button
+                        onClick={() => {
+                           onRemove(item.id);
+                        }}
+                     >
+                        Remove
+                     </button>
+                  </li>
+               ))}
+         </ul>
+      </div>
+   );
 }
 
-export default Child
+export default Child;
